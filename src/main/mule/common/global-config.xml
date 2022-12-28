@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<vm:config name="VM_Config" doc:name="VM Config" doc:id="4c4520a3-96cd-4986-b8fd-ce695c3d0104" >
+		<vm:connection >
+			<reconnection >
+				<reconnect />
+			</reconnection>
+		</vm:connection>
+		<vm:queues >
+			<vm:queue queueName="${queue.papi-policy.name}" />
+		</vm:queues>
+	</vm:config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="0d8868d0-bb26-4312-ad03-3d873f7528a2" basePath="${sapi.policy-plan.basePath}" >
+		<http:request-connection protocol="${sapi.policy-plan.protocol}" host="${sapi.policy-plan.host}" port="${sapi.policy-plan..port}" connectionIdleTimeout="${sapi.policy-plan.timeout}" >
+			<reconnection >
+				<reconnect />
+			</reconnection>
+		</http:request-connection>
+		<http:default-headers >
+			<http:default-header key="client_id" value="${sapi.policy-plan.clientId}" />
+			<http:default-header key="client_secret" value="${sapi.policy-plan.clientSecret}" />
+		</http:default-headers>
+	</http:request-config>
+</mule>

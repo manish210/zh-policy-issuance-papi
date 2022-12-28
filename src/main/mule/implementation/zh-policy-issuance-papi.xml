@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd">
+	<flow name="zh-policy-issuance-papiFlow" doc:id="dbdf2d09-e0ce-404e-bf39-6eb0658bf7d9" >
+		<vm:listener queueName="${queue.papi-policy.name}" doc:name="Listener" doc:id="8df8c5d7-af76-4416-b6dc-26542776e8fd" config-ref="VM_Config" timeoutUnit="MILLISECONDS"/>
+		<logger level="INFO" doc:name="entry logger" doc:id="9b5f1f3f-e52d-4086-9e97-420974a9e182" message="#[payload]"/>
+		<ee:transform doc:name="storing policy payload" doc:id="d3baf0a6-6b12-4099-9271-729393b51d98" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="calling core system" doc:id="3050a991-cb17-4c76-bac7-b09e607761c3" config-ref="HTTP_Request_configuration" path="/policyCreation"/>
+		<ee:transform doc:name="response payload" doc:id="c7557bc1-3d9a-40df-819a-b882796f0a2e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="exit logger" doc:id="56e52d1a-3bdf-4eba-acd4-3930297f032c" message="#[payload]"/>
+	</flow>
+</mule>

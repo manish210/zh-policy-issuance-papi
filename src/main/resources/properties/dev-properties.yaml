@@ -1,0 +1,15 @@
+queue:
+  papi-policy:
+    name:  "zh-create-policy"
+    
+sapi:        
+  policy-plan:        
+    port: "8083"
+    host: "zh-quotation-policy-issuance-sapi-dev.us-e2.cloudhub.io"
+    protocol: "HTTP"
+    version: "v1"
+    basePath: "/"
+    timeout: "90000"
+  
+  
+  
